@@ -1,5 +1,5 @@
 <template>
-  <ul class="`plain-list pokeList">
+  <ul class="plain-list pokeList">
             <li v-for="pokemon of pokemons" class="pokemonListItem" :key="pokemon.name">
                 <NuxtLink class="pokemonContainer" :to="`/pokemon/${pokemon.name}`">
                     <p class="pokemonId">No. {{pokemon.id}}</p>
@@ -18,6 +18,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'IndexPage',
+  layout: 'default',
   async asyncData() {
     const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
     const resJson = await res.json();
@@ -36,6 +37,11 @@ export default Vue.extend({
       pokemons,
     }
   },
+  head() {
+    return {
+      title: "Pokedex: Generation 1"
+    }
+  }
 });
 </script>
 
