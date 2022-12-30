@@ -1,8 +1,7 @@
-export default {
-  // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+import axios from 'axios';
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
+export default {
+  target: 'static',
   head: {
     title: 'my-nuxt-2-app',
     htmlAttrs: {
@@ -12,35 +11,20 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  generate: {
+    async routes() {
+      // Axios is required here unless you're using Node 18
+      const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
+      const pokemons = res.data.results;
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
-  ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  ],
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
+      return pokemons.map(pokemon => {
+        return '/pokemon/' + pokemon.name
+      })
+    }
   }
 }
